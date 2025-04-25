@@ -13,6 +13,24 @@ work_duration = 40 * 60
 break_duration = 10 * 60
 timer_id = None
 
+# --- Theme colors ---
+LIGHT_THEME = {
+    "bg": "#FFFFFF",  # White background
+    "fg": "#000000",  # Black text
+    "button_bg": "#F0F0F0",  # Light button
+    "button_fg": "#000000"  # Black text on button
+}
+
+DARK_THEME = {
+    "bg": "#2E2E2E",  # Dark background
+    "fg": "#FFFFFF",  # White text
+    "button_bg": "#555555",  # Dark button
+    "button_fg": "#FFFFFF"  # White text on button
+}
+
+# Set default theme (Light)
+current_theme = LIGHT_THEME
+
 # --- Timer Functions ---
 
 def start_timer():
@@ -123,6 +141,34 @@ def update_stats_display():
     stats = get_today_stats()
     stats_label.config(text=f"Pomodoros Today: {stats}")
 
+# --- Theme Functions ---
+
+def toggle_theme():
+    global current_theme
+
+    # Switch between themes
+    if current_theme == LIGHT_THEME:
+        current_theme = DARK_THEME
+    else:
+        current_theme = LIGHT_THEME
+
+    # Apply theme to the window and widgets
+    apply_theme()
+
+def apply_theme():
+    root.config(bg=current_theme["bg"])
+    time_label.config(bg=current_theme["bg"], fg=current_theme["fg"])
+    stats_label.config(bg=current_theme["bg"], fg=current_theme["fg"])
+
+    for widget in root.winfo_children():
+        if isinstance(widget, tk.Button):  # Apply to buttons
+            widget.config(bg=current_theme["button_bg"], fg=current_theme["button_fg"])
+        elif isinstance(widget, tk.Label):  # Apply to labels
+            widget.config(bg=current_theme["bg"], fg=current_theme["fg"])
+
+    # Change toggle button text to indicate the active theme
+    theme_btn.config(text="Switch to Light Mode" if current_theme == DARK_THEME else "Switch to Dark Mode")
+
 # --- UI Setup ---
 
 root = tk.Tk()
@@ -160,6 +206,13 @@ tk.Button(btn_frame, text="Start", font=("Arial", 12), command=start_timer).grid
 tk.Button(btn_frame, text="Pause", font=("Arial", 12), command=pause_timer).grid(row=0, column=1, padx=5)
 tk.Button(btn_frame, text="Resume", font=("Arial", 12), command=resume_timer).grid(row=0, column=2, padx=5)
 tk.Button(btn_frame, text="Reset", font=("Arial", 12), command=reset_timer).grid(row=0, column=3, padx=5)
+
+# Add theme toggle button
+theme_btn = tk.Button(root, text="Switch to Dark Mode", command=toggle_theme)
+theme_btn.pack(pady=10)
+
+# Apply the default theme
+apply_theme()
 
 # Run the app
 root.mainloop()
