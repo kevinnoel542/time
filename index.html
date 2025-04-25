@@ -15,7 +15,8 @@
       <label>Break (min): <input id="breakDuration" type="number" value="10" /></label>
     </div>
 
-    <h2 id="timer">40:00</h2>
+    <h2 id="timer" class="normal">40:00</h2>
+    <img id="timerIcon" src="work-icon.svg" alt="Work Icon" style="width: 40px; height: 40px;">
 
     <div class="controls">
       <button onclick="startTimer()">Start</button>
@@ -26,6 +27,12 @@
 
     <p id="stats">Pomodoros Today: 0</p>
   </div>
+
+  <!-- Floating Action Button -->
+  <button class="fab" onclick="startTimer()">⏱</button>
+
+  <!-- Dark Mode Toggle -->
+  <button onclick="toggleDarkMode()">🌙</button>
 
   <!-- Notifications Area -->
   <div id="notification" class="notification"></div>
